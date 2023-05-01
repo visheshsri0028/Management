@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import *
 from django.contrib.auth.hashers import *
+from .forms import signup
 
 
 def home(request):
@@ -21,12 +22,18 @@ def success(request):
     return render(request, "success.html")
 
 
-def user_form(request):
+def register(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            return redirect('user_details', pk=user.pk)
+            new_user = user(
+                name=form.cleaned_date['full_name'],
+                username=form.cleaned_data['username'],
+                number=form.cleaned_data['number'],
+                password=form.cleaned_data['password'],
+            )
+            new_user.save()
+            return redirect('success')
         else:
             form = UserForm()
         return render(request, 'signup.html', {'form': form})

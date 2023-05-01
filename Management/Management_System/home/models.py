@@ -8,6 +8,12 @@ class signup(models.Model):
     username = models.CharField(max_length=50)
     number = models.IntegerField()
     password = models.CharField(max_length=20)
+    GENDERS = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('Unknown', 'Prefer Not To Say'),
+    )
+    gender = models.CharField(max_length=10, choices=GENDERS)
 
     def __str__(self):
         return f'{self.full_name}{self.username}{self.number}{self.password}'
